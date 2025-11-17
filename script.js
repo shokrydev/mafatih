@@ -1,125 +1,69 @@
 // Arabic keyboard mapping
 // Format: 'englishKey': 'arabicCharacter'
-const arabicKeyMap = {
-    // Top row
-    'q': 'ض',
-    'w': 'ص',
-    'e': 'ث',
-    'r': 'ق',
-    't': 'ف',
-    'y': 'غ',
-    'u': 'ع',
-    'i': 'ه',
-    'o': 'خ',
-    'p': 'ح',
-    '[': 'ج',
-    ']': 'د',
+async function loadArabicKeyMap() {
+  const response = await fetch('eng2ar.json');
+  return await response.json(); // reassign with fetched data
+}
 
-    // Middle row
-    'a': 'ش',
-    's': 'س',
-    'd': 'ي',
-    'f': 'ب',
-    'g': 'ل',
-    'h': 'ا',
-    'j': 'ت',
-    'k': 'ن',
-    'l': 'م',
-    ';': 'ك',
-    "'": 'ط',
-
-    // Bottom row
-    'z': 'ئ',
-    'x': 'ء',
-    'c': 'ؤ',
-    'v': 'ر',
-    'b': 'لا',
-    'n': 'ى',
-    'm': 'ة',
-    ',': 'و',
-    '.': 'ز',
-    '/': '؟',
-
-    // Numbers
-    '1': '١',
-    '2': '٢',
-    '3': '٣',
-    '4': '٤',
-    '5': '٥',
-    '6': '٦',
-    '7': '٧',
-    '8': '٨',
-    '9': '٩',
-    '0': '٠',
-
-    // Special keys
-    ' ': ' ',
-    'Enter': '\n',
-    'Backspace': 'Backspace',
-};
+const arabicAlphabetOrder = ['ء', 'آ', 'أ', 'ؤ', 'ا', 'ب', 'ة', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'لا', 'م', 'ن', 'ه', 'و', 'ي', 'ى', 'ئ', 'إ'];
+const arabicAlphabetOrder2 = ["ء","ا","أ","إ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ظ","ط","ع","غ","ف","ق","ك","ل","م","ن","ه","ة","و","ؤ","ي","لا","ى","ئ"]
 
 // DOM elements
 const textOutput = document.getElementById('textOutput');
-const copyBtn = document.getElementById('copyBtn');
 const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
 const keyInfo = document.getElementById('keyInfo');
 const keyGrid = document.getElementById('keyGrid');
 
 // Current text content
 let currentText = '';
 
-// Initialize the app
-function init() {
-    displayKeyMapping();
-    setupEventListeners();
-}
-
 // Display all keyboard mappings
-function displayKeyMapping() {
+function displayKeyMapping(arabicKeyMap) {
     keyGrid.innerHTML = '';
 
-    for (const [key, arabic] of Object.entries(arabicKeyMap)) {
-        // Skip Backspace for display (it's a function key)
-        if (key === 'Backspace' || key === 'Enter') {
+    for (const [arKey, engKey] of Object.entries(arabicKeyMap)) {
+        // Skip Backspace and other function keys in keyboard display
+        if (engKey === 'Backspace' || engKey === 'Enter') {
             continue;
         }
 
         const keyItem = document.createElement('div');
         keyItem.className = 'key-item';
         keyItem.innerHTML = `
-            <span class="key-name">${key}</span>
-            <span class="arabic-letter">${arabic}</span>
+            <span class="ar-key">${arKey}</span>
+            <span class="eng-key">${engKey}</span>
         `;
         keyGrid.appendChild(keyItem);
     }
 }
 
 // Setup event listeners
-function setupEventListeners() {
+function setupEventListeners(arabicKeyMap) {
     // Keyboard input
-    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener('keydown', (event) => handleKeyPress(arabicKeyMap, event));
 
     // Copy button
-    copyBtn.addEventListener('click', copyToClipboard);
+    copyBtn.addEventListener('click', (event) => copyToClipboard(arabicKeyMap, event));
 
     // Clear button
     clearBtn.addEventListener('click', clearText);
 }
 
 // Handle key press
-function handleKeyPress(event) {
-    const key = event.key.toLowerCase();
+function handleKeyPress(arabicKeyMap, event) {
+    const key = event.key; //.toLowerCase();
 
     // Show current key info
-    updateKeyInfo(key, event.key);
+    updateKeyInfo(arabicKeyMap, key, event.key);
 
     // Handle special keys
-    if (key === 'backspace') {
+    if (key === 'backspace' || key === 'Backspace') {
         event.preventDefault();
         if (currentText.length > 0) {
             currentText = currentText.slice(0, -1);
         }
-    } else if (key === 'enter') {
+    } else if (key === 'enter' || key === 'Enter') {
         event.preventDefault();
         currentText += '\n';
     } else if (key === ' ') {
@@ -139,7 +83,7 @@ function updateDisplay() {
 }
 
 // Update key info display
-function updateKeyInfo(key, displayKey) {
+function updateKeyInfo(arabicKeyMap, key, displayKey) {
     const arabic = arabicKeyMap[key] || arabicKeyMap[displayKey] || 'Not mapped';
     const arabicDisplay = arabic === 'Backspace' ? '← Delete' : arabic === '\n' ? '↵ Enter' : arabic;
     keyInfo.textContent = `Pressed: "${displayKey}" → "${arabicDisplay}"`;
@@ -178,6 +122,13 @@ function clearText() {
         updateDisplay();
         keyInfo.textContent = 'Text cleared. Start typing!';
     }
+}
+
+// Initialize the app
+async function init() {
+    const arabicKeyMap = await loadArabicKeyMap();
+    displayKeyMapping(arabicKeyMap);
+    setupEventListeners(arabicKeyMap);
 }
 
 // Initialize app on page load
