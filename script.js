@@ -5,8 +5,8 @@ async function loadArabicKeyMap() {
   return await response.json(); // reassign with fetched data
 }
 
-const arabicAlphabetOrder = ['ء', 'آ', 'أ', 'ؤ', 'ا', 'ب', 'ة', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'لا', 'م', 'ن', 'ه', 'و', 'ي', 'ى', 'ئ', 'إ'];
-const arabicAlphabetOrder2 = ["ء","ا","أ","إ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ظ","ط","ع","غ","ف","ق","ك","ل","م","ن","ه","ة","و","ؤ","ي","لا","ى","ئ"]
+const arabicAlphabetOrder2 = ['ء', 'آ', 'أ', 'ؤ', 'ا', 'ب', 'ة', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'لا', 'م', 'ن', 'ه', 'و', 'ي', 'ى', 'ئ', 'إ'];
+const arabicKeyOrder = ["ء", "آ","ا","أ","إ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ظ","ط","ع","غ","ف","ق","ك","ل","م","ن","ه","ة","و","ؤ","ي","ى","ئ","لا"]
 
 // DOM elements
 const textOutput = document.getElementById('textOutput');
@@ -22,9 +22,9 @@ let currentText = '';
 function displayKeyMapping(arabicKeyMap) {
     keyGrid.innerHTML = '';
 
-    for (const [arKey, engKey] of Object.entries(arabicKeyMap)) {
+    for (const [engKey, arKey] of Object.entries(arabicKeyMap)) {
         // Skip Backspace and other function keys in keyboard display
-        if (engKey === 'Backspace' || engKey === 'Enter') {
+        if (!arabicKeyOrder.includes(arKey)) {
             continue;
         }
 

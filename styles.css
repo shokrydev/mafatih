@@ -151,10 +151,11 @@ h1 {
 .key-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 8px;
+    direction: rtl;
+    gap: 4px;
     max-height: 300px;
     overflow-y: auto;
-    padding: 10px;
+    padding: 5px;
     background: #f9f9f9;
     border-radius: 8px;
 }
@@ -163,14 +164,14 @@ h1 {
     background: white;
     border: 1px solid #ddd;
     border-radius: 6px;
-    padding: 10px;
+    padding: 5px;
     text-align: center;
     font-size: 0.85rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 2px;
     transition: all 0.2s;
 }
 
@@ -179,15 +180,15 @@ h1 {
     border-color: #667eea;
 }
 
-.key-item .key-name {
-    font-weight: bold;
-    color: #333;
-}
-
-.key-item .arabic-letter {
+.key-item .ar-key {
     font-size: 1.2rem;
     color: #667eea;
     font-family: 'Arial', sans-serif;
+}
+
+.key-item .eng-key {
+    font-weight: bold;
+    color: #333;
 }
 
 @media (max-width: 600px) {
