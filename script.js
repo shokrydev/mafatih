@@ -1,12 +1,11 @@
 // Arabic keyboard mapping
 // Format: 'englishKey': 'arabicCharacter'
 async function loadArabicKeyMap() {
-  const response = await fetch('eng2ar.json');
+  const response = await fetch('eng2ar_numless.json');
   return await response.json(); // reassign with fetched data
 }
 
-const arabicAlphabetOrder2 = ['ء', 'آ', 'أ', 'ؤ', 'ا', 'ب', 'ة', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'لا', 'م', 'ن', 'ه', 'و', 'ي', 'ى', 'ئ', 'إ'];
-const arabicKeyOrder = ["ء", "آ","ا","أ","إ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ظ","ط","ع","غ","ف","ق","ك","ل","م","ن","ه","ة","و","ؤ","ي","ى","ئ","لا"]
+const arabicKeyOrder = ['ء', 'آ','ا','أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ظ','ط','ع','غ','ف','ق','ك','ل','م','ن','ه','ة','و','ؤ','ي','ى','ئ','لا']
 
 // DOM elements
 const textOutput = document.getElementById('textOutput');
@@ -14,9 +13,6 @@ const clearBtn = document.getElementById('clearBtn');
 const copyBtn = document.getElementById('copyBtn');
 const keyInfo = document.getElementById('keyInfo');
 const keyGrid = document.getElementById('keyGrid');
-
-// Current text content
-let currentText = '';
 
 // Display all keyboard mappings
 function displayKeyMapping(arabicKeyMap) {
@@ -40,8 +36,8 @@ function displayKeyMapping(arabicKeyMap) {
 
 // Setup event listeners
 function setupEventListeners(arabicKeyMap) {
-    // Keyboard input
-    document.addEventListener('keydown', (event) => handleKeyPress(arabicKeyMap, event));
+    // Keyboard input, need keypress instead of keydown for lower and upper case sensitivety
+    document.addEventListener('keypress', (event) => handleKeyPress(arabicKeyMap, event));
 
     // Copy button
     copyBtn.addEventListener('click', (event) => copyToClipboard(arabicKeyMap, event));
@@ -52,51 +48,33 @@ function setupEventListeners(arabicKeyMap) {
 
 // Handle key press
 function handleKeyPress(arabicKeyMap, event) {
-    const key = event.key; //.toLowerCase();
+    event_key = event.key
 
     // Show current key info
-    updateKeyInfo(arabicKeyMap, key, event.key);
+    updateKeyInfo(arabicKeyMap, event_key)
 
-    // Handle special keys
-    if (key === 'backspace' || key === 'Backspace') {
+    if (arabicKeyMap[event_key]) {
         event.preventDefault();
-        if (currentText.length > 0) {
-            currentText = currentText.slice(0, -1);
-        }
-    } else if (key === 'enter' || key === 'Enter') {
-        event.preventDefault();
-        currentText += '\n';
-    } else if (key === ' ') {
-        event.preventDefault();
-        currentText += ' ';
-    } else if (arabicKeyMap[key]) {
-        event.preventDefault();
-        currentText += arabicKeyMap[key];
+        textOutput.value += arabicKeyMap[event_key];
     }
 
     updateDisplay();
 }
 
-// Update the text display
-function updateDisplay() {
-    textOutput.value = currentText;
-}
-
 // Update key info display
-function updateKeyInfo(arabicKeyMap, key, displayKey) {
-    const arabic = arabicKeyMap[key] || arabicKeyMap[displayKey] || 'Not mapped';
-    const arabicDisplay = arabic === 'Backspace' ? '← Delete' : arabic === '\n' ? '↵ Enter' : arabic;
-    keyInfo.textContent = `Pressed: "${displayKey}" → "${arabicDisplay}"`;
+function updateKeyInfo(arabicKeyMap, event_key) {
+    const arabic = arabicKeyMap[event_key] || 'Not mapped';
+    keyInfo.textContent = `Pressed: "${event_key}" → "${arabic}"`;
 }
 
 // Copy text to clipboard
 function copyToClipboard() {
-    if (currentText.length === 0) {
+    if (textOutput.value.length === 0) {
         alert('No text to copy!');
         return;
     }
 
-    navigator.clipboard.writeText(currentText).then(() => {
+    navigator.clipboard.writeText(textOutput.value).then(() => {
         // Show feedback
         const originalText = copyBtn.textContent;
         copyBtn.textContent = 'Copied!';
@@ -113,12 +91,12 @@ function copyToClipboard() {
 
 // Clear all text
 function clearText() {
-    if (currentText.length === 0) {
+    if (textOutput.value.length === 0) {
         return;
     }
 
     if (confirm('Are you sure you want to clear all text?')) {
-        currentText = '';
+        textOutput.value = '';
         updateDisplay();
         keyInfo.textContent = 'Text cleared. Start typing!';
     }
