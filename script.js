@@ -48,17 +48,37 @@ function setupEventListeners(arabicKeyMap) {
 
 // Handle key press
 function handleKeyPress(arabicKeyMap, event) {
-    event_key = event.key
+    event_key = event.key;
 
     // Show current key info
-    updateKeyInfo(arabicKeyMap, event_key)
+    updateKeyInfo(arabicKeyMap, event_key);
 
     if (arabicKeyMap[event_key]) {
         event.preventDefault();
-        textOutput.value += arabicKeyMap[event_key];
-    }
 
-    updateDisplay();
+        caret_position = textOutput.selectionStart;
+        caret_position_end = textOutput.selectionEnd;
+
+        if(caret_position > caret_position_end){
+            // If text is selected, remove it first
+            //textOutput.value = textOutput.value.slice(0, caret_position) + textOutput.value.slice(textOutput.selectionEnd);
+            placeholder = caret_position_end;
+            caret_position_end = caret_position;
+            caret_position = placeholder;
+        }
+
+        // Insert Arabic character at cursor position
+        if(textOutput.value.length == caret_position){
+            textOutput.value += arabicKeyMap[event_key];
+        } else if(0 == caret_position){
+            textOutput.value = arabicKeyMap[event_key] + textOutput.value;
+        } else {
+            textOutput.value = textOutput.value.slice(0, caret_position) + arabicKeyMap[event_key] + textOutput.value.slice(caret_position_end);
+        }
+
+        textOutput.selectionStart = caret_position + 1;
+        textOutput.selectionEnd = caret_position + 1;
+    }
 }
 
 // Update key info display
@@ -97,7 +117,6 @@ function clearText() {
 
     if (confirm('Are you sure you want to clear all text?')) {
         textOutput.value = '';
-        updateDisplay();
         keyInfo.textContent = 'Text cleared. Start typing!';
     }
 }
