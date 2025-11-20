@@ -6,6 +6,7 @@ async function loadArabicKeyMap() {
 }
 
 const arabicKeyOrder = ['ء', 'آ','ا','أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ظ','ط','ع','غ','ف','ق','ك','ل','م','ن','ه','ة','و','ؤ','ي','ى','ئ','لا']
+let ar2buttonDict = {}
 
 // DOM elements
 const textOutput = document.getElementById('textOutput');
@@ -19,19 +20,41 @@ function displayKeyMapping(arabicKeyMap) {
     keyGrid.innerHTML = '';
 
     for (const [engKey, arKey] of Object.entries(arabicKeyMap)) {
-        // Skip Backspace and other function keys in keyboard display
+        // Only include arabic characters in the displayed key grid
         if (!arabicKeyOrder.includes(arKey)) {
             continue;
         }
 
+        if (!ar2buttonDict[arKey]){
+            ar2buttonDict[arKey] = engKey;
+        } else {
+            ar2buttonDict[arKey] += '/' + engKey;
+        }
+    }
+
+    for (const [index, arKey] of Object.entries(arabicKeyOrder)) {
+
         const keyItem = document.createElement('div');
         keyItem.className = 'key-item';
+        keyItem.onclick = clickedKey
         keyItem.innerHTML = `
             <span class="ar-key">${arKey}</span>
-            <span class="eng-key">${engKey}</span>
+            <span class="eng-key">${ar2buttonDict[arKey]}</span>
         `;
+        ar2buttonDict[arKey] = keyItem;
         keyGrid.appendChild(keyItem);
     }
+}
+
+function clickedKey(event){
+    console.log(event);
+    keyItem = event.currentTarget;
+
+    keyItem.classList.add('key-clicked');
+
+    setTimeout(() => {
+        keyItem.classList.remove('key-clicked');
+    }, 100);
 }
 
 // Setup event listeners

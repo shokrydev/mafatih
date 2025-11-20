@@ -49,7 +49,7 @@ h1 {
     font-size: 1.2rem;
     border: 2px solid #ddd;
     border-radius: 8px;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     resize: vertical;
     direction: rtl;
     text-align: right;
@@ -161,7 +161,7 @@ h1 {
 }
 
 .key-item {
-    background: white;
+    background: RGB(237, 232, 208);
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 5px;
@@ -175,20 +175,32 @@ h1 {
     transition: all 0.2s;
 }
 
-.key-item:hover {
+/*.key-item:hover {
     background: #f0f0f0;
     border-color: #667eea;
+}*/
+
+.key-item.key-clicked {
+    background: RGB(210, 205, 183);
+    color: #ffffff;
+    border-color: #000000;
 }
 
 .key-item .ar-key {
     font-size: 1.2rem;
-    color: #667eea;
+    color: RGB(20, 45, 70);
     font-family: 'Arial', sans-serif;
 }
 
 .key-item .eng-key {
     font-weight: bold;
-    color: #333;
+    color: RGB(170, 175, 180);
+    font-family: 
+        'Roboto Mono',      /* Android */
+        'DejaVu Sans Mono', /* Linux */
+        Consolas,           /* Windows */
+        'SF Mono',          /* macOS */
+        monospace;
 }
 
 @media (max-width: 600px) {
