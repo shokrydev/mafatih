@@ -5,8 +5,11 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image: url(ornamented.png);
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: auto;
+    font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -15,19 +18,29 @@ body {
 }
 
 .container {
-    background: white;
+    background: #a79f72fa;
+    border: 2px solid #3e3668;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    padding: 40px;
+    box-shadow: 15px 15px 10px rgba(0, 0, 0, 0.7);
+    padding: 30px;
     max-width: 900px;
     width: 100%;
 }
 
 h1 {
-    color: #333;
+    color: #2e284b;
+    background: #e2e1d8fa;
     text-align: center;
-    margin-bottom: 10px;
-    font-size: 2.5rem;
+    margin-bottom: 18px;
+    font-size: 2.2rem;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(209,168,46,0.12);
+    box-shadow: 0 6px 18px rgba(46,40,75,0.06);
+    font-weight: 700;
+    letter-spacing: normal;
+    font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
+    line-height: 1.15;
 }
 
 .subtitle {
@@ -43,11 +56,12 @@ h1 {
 }
 
 .text-output {
+    background: #e2e1d8fa;
     width: 100%;
     min-height: 150px;
     padding: 20px;
     font-size: 1.2rem;
-    border: 2px solid #ddd;
+    border: 2px solid #928080;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     resize: vertical;
@@ -58,7 +72,7 @@ h1 {
 
 .text-output:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #3e3668;
 }
 
 .text-output::placeholder {
@@ -76,7 +90,7 @@ h1 {
 .copy-btn {
     margin-top: 15px;
     padding: 12px 30px;
-    background: #667eea;
+    background: #2e284b;
     color: white;
     border: none;
     border-radius: 6px;
@@ -87,7 +101,7 @@ h1 {
 }
 
 .copy-btn:hover {
-    background: #5568d3;
+    background: #FFD700;
     transform: translateY(-2px);
 }
 
@@ -96,12 +110,12 @@ h1 {
 }
 
 .copy-btn.copied {
-    background: #4caf50;
+    background: #FFD700;
 }
 
 .clear-btn {
     padding: 10px 25px;
-    background: #ff6b6b;
+    background: #928080;
     color: white;
     border: none;
     border-radius: 6px;
@@ -122,12 +136,13 @@ h1 {
 }
 
 .keyboard-info {
+    border: 2px solid #928080;
     text-align: center;
     margin: 25px 0;
     padding: 15px;
-    background: #f5f5f5;
+    background: #e2e1d8fa;
     border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #2e284b;
 }
 
 .keyboard-info p {
@@ -137,9 +152,9 @@ h1 {
 }
 
 .keyboard-layout {
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 2px solid #eee;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e2e1d8fa;
 }
 
 .keyboard-layout h2 {
@@ -156,51 +171,49 @@ h1 {
     max-height: 300px;
     overflow-y: auto;
     padding: 5px;
-    background: #f9f9f9;
+    background: linear-gradient(-150deg, #101010, #24221b);
     border-radius: 8px;
 }
 
 .key-item {
-    background: RGB(237, 232, 208);
-    border: 1px solid #ddd;
+    cursor: pointer;
+    background: linear-gradient(-45deg, #050505, #333026);
+    border: 1px solid #222;
     border-radius: 6px;
     padding: 5px;
     text-align: center;
-    font-size: 0.85rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
+    box-shadow:
+        inset 0 2px 5px rgba(255, 255, 255, 0.1),
+        0 2px 5px rgba(0, 0, 0, 0.7);
     transition: all 0.2s;
+    user-select: none;
 }
 
-/*.key-item:hover {
-    background: #f0f0f0;
-    border-color: #667eea;
-}*/
+.key-item:hover {
+    background: linear-gradient(-45deg, #101010, #444033);
+    border: 1px solid #363636;
+}
 
 .key-item.key-clicked {
-    background: RGB(210, 205, 183);
-    color: #ffffff;
-    border-color: #000000;
+    background: linear-gradient(-45deg, #000000, #29261e);
+    border: 1px solid #222;
 }
 
 .key-item .ar-key {
+    font-weight: bold;
     font-size: 1.2rem;
-    color: RGB(20, 45, 70);
-    font-family: 'Arial', sans-serif;
+    color: #ccac4d;
 }
 
 .key-item .eng-key {
+    padding-left: 4px;
+    align-self: flex-end;
     font-weight: bold;
+    font-size: 0.85rem;
     color: RGB(170, 175, 180);
-    font-family: 
-        'Roboto Mono',      /* Android */
-        'DejaVu Sans Mono', /* Linux */
-        Consolas,           /* Windows */
-        'SF Mono',          /* macOS */
-        monospace;
+    font-family: 'Fira Mono', 'JetBrains Mono','Cascadia Mono'
 }
 
 @media (max-width: 600px) {
