@@ -29,24 +29,32 @@ body {
 
 h1 {
     color: #2e284b;
-    background: #e2e1d8fa;
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     font-size: 2.2rem;
-    padding: 14px 18px;
-    border-radius: 10px;
-    border: 1px solid rgba(209,168,46,0.12);
-    box-shadow: 0 6px 18px rgba(46,40,75,0.06);
-    font-weight: 700;
-    letter-spacing: normal;
+    padding: 11px 18px;
+    text-shadow: 
+    2px 2px 4px rgba(0,0,0,0.5), 
+    4px 4px 10px rgba(0,0,0,0.3),
+    -1px -1px 0 #f39d12cb;
+    
+    font-weight: bold;
+    letter-spacing: 0.05em;
     font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
     line-height: 1.15;
+    display: flex;
+    align-items: center;
+}
+
+
+h1 span.arabic {
+  margin-inline-start: auto;
 }
 
 .subtitle {
     text-align: center;
     color: #666;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     font-size: 1rem;
 }
 
@@ -59,7 +67,7 @@ h1 {
     background: #e2e1d8fa;
     width: 100%;
     min-height: 150px;
-    padding: 20px;
+    padding: 10px;
     font-size: 1.2rem;
     border: 2px solid #928080;
     border-radius: 8px;
@@ -79,17 +87,17 @@ h1 {
     color: #bbb;
 }
 
-.button-row {
+.tool-row {
     display:flex;
     justify-content:space-between;
     align-items:center;
     width:100%;
-    margin-top:8px;
+    margin-top:5px;
 }
 
 .copy-btn {
-    margin-top: 15px;
-    padding: 12px 30px;
+    flex-shrink: 0;
+    padding: 10px 25px;
     background: #2e284b;
     color: white;
     border: none;
@@ -110,10 +118,11 @@ h1 {
 }
 
 .copy-btn.copied {
-    background: #FFD700;
+    background: #207068;
 }
 
 .clear-btn {
+    flex-shrink: 0;
     padding: 10px 25px;
     background: #928080;
     color: white;
@@ -123,7 +132,6 @@ h1 {
     cursor: pointer;
     transition: background 0.3s, transform 0.1s;
     font-weight: 600;
-    margin-top: 20px;
 }
 
 .clear-btn:hover {
@@ -136,10 +144,11 @@ h1 {
 }
 
 .keyboard-info {
+    flex-grow: 1;
+    margin: 0 5px;
     border: 2px solid #928080;
     text-align: center;
-    margin: 25px 0;
-    padding: 15px;
+    padding: 3px;
     background: #e2e1d8fa;
     border-radius: 8px;
     border-left: 4px solid #2e284b;
@@ -152,14 +161,14 @@ h1 {
 }
 
 .keyboard-layout {
-    margin-top: 30px;
-    padding-top: 20px;
+    margin-top: 10px;
+    padding-top: 10px;
     border-top: 2px solid #e2e1d8fa;
 }
 
 .keyboard-layout h2 {
-    color: #333;
-    margin-bottom: 20px;
+    color: #2e284b;
+    margin-bottom: 5px;
     font-size: 1.3rem;
 }
 
@@ -168,7 +177,7 @@ h1 {
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     direction: rtl;
     gap: 4px;
-    max-height: 300px;
+    max-height: 370px;
     overflow-y: auto;
     padding: 5px;
     background: linear-gradient(-150deg, #101010, #24221b);

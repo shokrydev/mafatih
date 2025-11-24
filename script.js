@@ -120,7 +120,7 @@ function copyToClipboard() {
     navigator.clipboard.writeText(textOutput.value).then(() => {
         // Show feedback
         const originalText = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
+        copyBtn.textContent = 'Copied it !';
         copyBtn.classList.add('copied');
 
         setTimeout(() => {
