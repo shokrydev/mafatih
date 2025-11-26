@@ -7,8 +7,8 @@
 body {
     background-image: url(ornamented.png);
     background-position: center;
-    background-repeat: repeat-x;
-    background-size: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
     font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
     min-height: 100vh;
     display: flex;
