@@ -69,7 +69,7 @@ h1 span.arabic {
     min-height: 150px;
     padding: 10px;
     font-size: 1.2rem;
-    border: 2px solid #928080;
+    border: 3px inset #928080;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     resize: vertical;
@@ -100,7 +100,7 @@ h1 span.arabic {
     padding: 10px 25px;
     background: #2e284b;
     color: white;
-    border: none;
+    border: 2px outset #4a4175;
     border-radius: 6px;
     font-size: 1rem;
     cursor: pointer;
@@ -110,15 +110,18 @@ h1 span.arabic {
 
 .copy-btn:hover {
     background: #FFD700;
+    border-color: #fdd808;
     transform: translateY(-2px);
 }
 
 .copy-btn:active {
+    border-style: inset;
     transform: translateY(0);
 }
 
 .copy-btn.copied {
     background: #207068;
+    border-color: #2b887f;
 }
 
 .clear-btn {
@@ -126,7 +129,7 @@ h1 span.arabic {
     padding: 10px 25px;
     background: #928080;
     color: white;
-    border: none;
+    border: 2px outset #a09090;
     border-radius: 6px;
     font-size: 0.95rem;
     cursor: pointer;
@@ -187,7 +190,7 @@ h1 span.arabic {
 .key-item {
     cursor: pointer;
     background: linear-gradient(-45deg, #050505, #333026);
-    border: 1px solid #222;
+    border: 3px outset #222;
     border-radius: 6px;
     padding: 5px;
     text-align: center;
@@ -202,12 +205,12 @@ h1 span.arabic {
 
 .key-item:hover {
     background: linear-gradient(-45deg, #101010, #444033);
-    border: 1px solid #363636;
+    border: 2px outset #363636;
 }
 
 .key-item.key-clicked {
     background: linear-gradient(-45deg, #000000, #29261e);
-    border: 1px solid #222;
+    border: 4px outset #222;
 }
 
 .key-item .ar-key {
@@ -223,6 +226,12 @@ h1 span.arabic {
     font-size: 0.85rem;
     color: RGB(170, 175, 180);
     font-family: 'Fira Mono', 'JetBrains Mono','Cascadia Mono'
+}
+
+.encircled {
+  text-shadow: 
+    0 0 8px #d4c7a1,
+    0 0 16px #ffc40099;
 }
 
 @media (max-width: 600px) {

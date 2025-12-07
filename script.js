@@ -6,6 +6,7 @@ async function loadArabicKeyMap() {
 }
 
 const arabicKeyOrder = ['ء', 'آ','ا','أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ظ','ط','ع','غ','ف','ق','ك','ل','م','ن','ه','ة','و','ؤ','ي','ى','ئ']
+const highlightedKeys = ['ث','خ','ذ','ش','ض','ظ','غ','ة']
 let ar2buttonDict = {}
 
 // DOM elements
@@ -54,10 +55,13 @@ function displayKeyMapping(arabicKeyMap) {
     // Turn reverse mapping into keyboard grid items
     for (const [index, arKey] of Object.entries(arabicKeyOrder)) {
         const keyItem = document.createElement('div');
-        keyItem.className = 'key-item';
+        keyItem.classList.add('key-item');
         keyItem.onclick = clickedKey
+
+        let arKeyClasses = highlightedKeys.includes(arKey) ? 'ar-key encircled' : 'ar-key';
+
         keyItem.innerHTML = `
-            <span class="ar-key">${arKey}</span>
+            <span class="${arKeyClasses}">${arKey}</span>
             <span class="eng-key">${ar2buttonDict[arKey]}</span>
         `;
         ar2buttonDict[arKey] = keyItem;
