@@ -210,7 +210,7 @@ h1 span.arabic {
 
 .key-item.key-clicked {
     background: linear-gradient(-45deg, #000000, #29261e);
-    border: 4px outset #222;
+    border: 3px outset #222;
 }
 
 .key-item .ar-key {

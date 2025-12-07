@@ -37,19 +37,12 @@ function displayKeyMapping(arabicKeyMap) {
 
     function clickedKey(event){
         const keyItem = event.currentTarget;
-
-        keyItem.classList.add('key-clicked');
-
         
         click2press_event = {
             key: keyItem.getElementsByClassName("eng-key")[0].innerHTML[0],
             preventDefault: () => {}
         }
         handleKeyPress(arabicKeyMap, click2press_event)
-
-        setTimeout(() => {
-            keyItem.classList.remove('key-clicked');
-        }, 100);
     }
 
     // Turn reverse mapping into keyboard grid items
@@ -90,6 +83,7 @@ function handleKeyPress(arabicKeyMap, event) {
     updateKeyInfo(arabicKeyMap, event_key);
 
     if (arabicKeyMap[event_key]) {
+        animatePress(ar2buttonDict[arabicKeyMap[event_key]])
         event.preventDefault();
 
         let caret_position = textOutput.selectionStart;
@@ -109,6 +103,14 @@ function handleKeyPress(arabicKeyMap, event) {
         textOutput.selectionStart = caret_position + 1;
         textOutput.selectionEnd = caret_position + 1;
     }
+}
+
+// Animate key press
+function animatePress(keyItem){
+    keyItem.classList.add('key-clicked');
+    setTimeout(() => {
+        keyItem.classList.remove('key-clicked');
+    }, 100);
 }
 
 // Update key info display
