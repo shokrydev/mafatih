@@ -80,7 +80,6 @@ h1 span.arabic {
 
 .text-output:focus {
     outline: none;
-    border-color: #3e3668;
 }
 
 .text-output::placeholder {

@@ -38,6 +38,8 @@ function displayKeyMapping(arabicKeyMap) {
     function clickedKey(event){
         const keyItem = event.currentTarget;
         
+
+        // TODO: needs clear explanation in comments
         click2press_event = {
             key: keyItem.getElementsByClassName("eng-key")[0].innerHTML[0],
             preventDefault: () => {}
@@ -78,6 +80,9 @@ function setupEventListeners(arabicKeyMap) {
 // Handle key press
 function handleKeyPress(arabicKeyMap, event) {
     const event_key = event.key;
+
+    // Focus text area to show caret
+    textOutput.focus()
 
     // Show current key info
     updateKeyInfo(arabicKeyMap, event_key);
