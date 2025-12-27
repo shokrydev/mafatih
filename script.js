@@ -9,12 +9,15 @@ const arabicKeyOrder = ['ء', 'آ','ا','أ','إ','ب','ت','ث','ج','ح','خ',
 const highlightedKeys = ['ث','خ','ذ','ش','ض','ظ','غ','ة']
 let ar2buttonDict = {}
 
+specialKeys = {'Space':' ', 'Enter': '\n', '⌫': 'Backspace'}
+
 // DOM elements
 const textOutput = document.getElementById('textOutput');
 const clearBtn = document.getElementById('clearBtn');
 const copyBtn = document.getElementById('copyBtn');
 const keyInfo = document.getElementById('keyInfo');
 const keyGrid = document.getElementById('keyGrid');
+const specialGrid = document.getElementById('specialKeyGrid');
 
 // Display all keyboard mappings
 function displayKeyMapping(arabicKeyMap) {
@@ -38,8 +41,7 @@ function displayKeyMapping(arabicKeyMap) {
     function clickedKey(event){
         const keyItem = event.currentTarget;
         
-
-        // TODO: needs clear explanation in comments
+        // mouse click simulated as key press event, prevent default function is necessary as we it is called for normal keypresses
         click2press_event = {
             key: keyItem.getElementsByClassName("eng-key")[0].innerHTML[0],
             preventDefault: () => {}
@@ -53,7 +55,7 @@ function displayKeyMapping(arabicKeyMap) {
         keyItem.classList.add('key-item');
         keyItem.onclick = clickedKey
 
-        let arKeyClasses = highlightedKeys.includes(arKey) ? 'ar-key encircled' : 'ar-key';
+        let arKeyClasses = highlightedKeys.includes(arKey) ? 'ar-key highlight' : 'ar-key';
 
         keyItem.innerHTML = `
             <span class="${arKeyClasses}">${arKey}</span>
@@ -61,6 +63,18 @@ function displayKeyMapping(arabicKeyMap) {
         `;
         ar2buttonDict[arKey] = keyItem;
         keyGrid.appendChild(keyItem);
+    }
+
+    for (const [displayedKey, keyEffect] of Object.entries(specialKeys)) {
+        const keyItem = document.createElement('div');
+        keyItem.classList.add('key-item');
+        keyItem.onclick = event => {clickedKey}
+
+        keyItem.innerHTML = `
+            <span class="ar-key">${displayedKey}</span>
+        `;
+        
+        specialGrid.appendChild(keyItem);
     }
 }
 

@@ -227,7 +227,7 @@ h1 span.arabic {
     font-family: 'Fira Mono', 'JetBrains Mono','Cascadia Mono'
 }
 
-.encircled {
+.highlight {
   text-shadow: 
     0 0 8px #d4c7a1,
     0 0 16px #ffc40099;
