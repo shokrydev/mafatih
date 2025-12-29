@@ -184,6 +184,7 @@ h1 span.arabic {
     padding: 5px;
     background: linear-gradient(-150deg, #101010, #24221b);
     border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 .key-item {

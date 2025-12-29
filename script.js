@@ -5,11 +5,12 @@ async function loadArabicKeyMap() {
   return await response.json(); // reassign with fetched data
 }
 
-const arabicKeyOrder = ['ء', 'آ','ا','أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ظ','ط','ع','غ','ف','ق','ك','ل','م','ن','ه','ة','و','ؤ','ي','ى','ئ']
+const arabicKeyOrder = ['ء','آ','ا','أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ظ','ط','ع','غ','ف','ق','ك','ل','م','ن','ه','ة','و','ؤ','ي','ى','ئ']
 const highlightedKeys = ['ث','خ','ذ','ش','ض','ظ','غ','ة']
 let ar2buttonDict = {}
 
-specialKeys = {'Space':' ', 'Enter': '\n', '⌫': 'Backspace'}
+specialKeys = {'⌫': 'Backspace', 'Enter': '\n', 'Space':' ' }
+numeralKeys = ['1','2','3','4','5','6','7','8','9','0']
 
 // DOM elements
 const textOutput = document.getElementById('textOutput');
@@ -18,6 +19,7 @@ const copyBtn = document.getElementById('copyBtn');
 const keyInfo = document.getElementById('keyInfo');
 const keyGrid = document.getElementById('keyGrid');
 const specialGrid = document.getElementById('specialKeyGrid');
+const numeralGrid = document.getElementById('numeralGrid')
 
 // Display all keyboard mappings
 function displayKeyMapping(arabicKeyMap) {
@@ -36,7 +38,6 @@ function displayKeyMapping(arabicKeyMap) {
             ar2buttonDict[arKey] += '/' + engKey;
         }
     }
-
 
     function clickedKey(event){
         const keyItem = event.currentTarget;
@@ -68,13 +69,25 @@ function displayKeyMapping(arabicKeyMap) {
     for (const [displayedKey, keyEffect] of Object.entries(specialKeys)) {
         const keyItem = document.createElement('div');
         keyItem.classList.add('key-item');
-        keyItem.onclick = event => {clickedKey}
+        keyItem.onclick = event => {replaceSelectionWithCharacter(keyEffect)}
 
         keyItem.innerHTML = `
             <span class="ar-key">${displayedKey}</span>
         `;
         
         specialGrid.appendChild(keyItem);
+    }
+
+    for (const [index, numeral] of Object.entries(numeralKeys)) {
+        const keyItem = document.createElement('div');
+        keyItem.classList.add('key-item');
+        keyItem.onclick = event => {replaceSelectionWithCharacter(numeral)}
+
+        keyItem.innerHTML = `
+            <span class="ar-key">${numeral}</span>
+        `;
+        
+        numeralGrid.appendChild(keyItem);
     }
 }
 
@@ -91,6 +104,26 @@ function setupEventListeners(arabicKeyMap) {
     clearBtn.addEventListener('click', clearText);
 }
 
+
+function replaceSelectionWithCharacter(new_char){
+    let caret_position = textOutput.selectionStart;
+    let caret_position_end = textOutput.selectionEnd;
+
+    // swap if selection is backwards
+    if(caret_position > caret_position_end){
+        const placeholder = caret_position_end;
+        caret_position_end = caret_position;
+        caret_position = placeholder;
+    }
+
+    // Replace selected text with arabic character or inert at caret position
+    textOutput.value = textOutput.value.slice(0, caret_position) + new_char + textOutput.value.slice(caret_position_end);
+
+    // Move caret forward after inserting character
+    textOutput.selectionStart = caret_position + 1;
+    textOutput.selectionEnd = caret_position + 1;
+}
+
 // Handle key press
 function handleKeyPress(arabicKeyMap, event) {
     const event_key = event.key;
@@ -105,22 +138,7 @@ function handleKeyPress(arabicKeyMap, event) {
         animatePress(ar2buttonDict[arabicKeyMap[event_key]])
         event.preventDefault();
 
-        let caret_position = textOutput.selectionStart;
-        let caret_position_end = textOutput.selectionEnd;
-
-        // swap if selection is backwards
-        if(caret_position > caret_position_end){
-            const placeholder = caret_position_end;
-            caret_position_end = caret_position;
-            caret_position = placeholder;
-        }
-
-        // Replace selected text with arabic character or inert at caret position
-        textOutput.value = textOutput.value.slice(0, caret_position) + arabicKeyMap[event_key] + textOutput.value.slice(caret_position_end);
-
-        // Move caret forward after inserting character
-        textOutput.selectionStart = caret_position + 1;
-        textOutput.selectionEnd = caret_position + 1;
+        replaceSelectionWithCharacter(arabicKeyMap[event_key]);
     }
 }
 
