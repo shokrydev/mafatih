@@ -91,7 +91,6 @@ function displayKeyMapping(arabicKeyMap) {
     }
 }
 
-
 // Setup event listeners
 function setupEventListeners(arabicKeyMap) {
     // Keyboard input, need keypress instead of keydown for lower and upper case sensitivety
@@ -104,8 +103,7 @@ function setupEventListeners(arabicKeyMap) {
     clearBtn.addEventListener('click', clearText);
 }
 
-
-function replaceSelectionWithCharacter(new_char){
+function removeSelectionThenAdaptCaret(){
     let caret_position = textOutput.selectionStart;
     let caret_position_end = textOutput.selectionEnd;
 
@@ -115,13 +113,27 @@ function replaceSelectionWithCharacter(new_char){
         caret_position_end = caret_position;
         caret_position = placeholder;
     }
+}
 
+function backspace(){
+    if (textOutput.selectionStart == textOutput.selectionEnd && textOutput.selectionStart > 0){
+        textOutput.selectionStart -= 1
+    }
+    removeSelectionThenAdaptCaret()
+}
+
+function insertAtCaretPosition(new_char){
     // Replace selected text with arabic character or inert at caret position
     textOutput.value = textOutput.value.slice(0, caret_position) + new_char + textOutput.value.slice(caret_position_end);
 
     // Move caret forward after inserting character
     textOutput.selectionStart = caret_position + 1;
     textOutput.selectionEnd = caret_position + 1;
+}
+
+function replaceSelectionWithCharacter(new_char){
+    removeSelectionThenAdaptCaret()
+    insertAtCaretPosition(new_char)
 }
 
 // Handle key press
