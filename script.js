@@ -1,16 +1,16 @@
 // Arabic keyboard mapping
 // Format: 'englishKey': 'arabicCharacter'
 async function loadArabicKeyMap() {
-  const response = await fetch('eng2ar_numless.json');
-  return await response.json(); // reassign with fetched data
+    const response = await fetch('eng2ar_numless.json');
+    return await response.json(); // reassign with fetched data
 }
 
-const arabicKeyOrder = ['ء','آ','ا','أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ظ','ط','ع','غ','ف','ق','ك','ل','م','ن','ه','ة','و','ؤ','ي','ى','ئ']
-const highlightedKeys = ['ث','خ','ذ','ش','ض','ظ','غ','ة']
+const arabicKeyOrder = ['ء', 'آ', 'ا', 'أ', 'إ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ظ', 'ط', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'ة', 'و', 'ؤ', 'ي', 'ى', 'ئ']
+const highlightedKeys = ['ث', 'خ', 'ذ', 'ش', 'ض', 'ظ', 'غ', 'ة']
 let ar2buttonDict = {}
 
-specialKeys = {'⌫': 'Backspace', 'Enter': '\n', 'Space':' ' }
-numeralKeys = ['1','2','3','4','5','6','7','8','9','0']
+specialKeys = { '⌫': 'Backspace', 'Enter': '\n', 'Space': ' ' }
+numeralKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
 // DOM elements
 const textOutput = document.getElementById('textOutput');
@@ -32,20 +32,20 @@ function displayKeyMapping(arabicKeyMap) {
             continue;
         }
 
-        if (!ar2buttonDict[arKey]){
+        if (!ar2buttonDict[arKey]) {
             ar2buttonDict[arKey] = engKey;
         } else {
             ar2buttonDict[arKey] += '/' + engKey;
         }
     }
 
-    function clickedKey(event){
+    function clickedKey(event) {
         const keyItem = event.currentTarget;
-        
+
         // mouse click simulated as key press event, prevent default function is necessary as we it is called for normal keypresses
         click2press_event = {
             key: keyItem.getElementsByClassName("eng-key")[0].innerHTML[0],
-            preventDefault: () => {}
+            preventDefault: () => { }
         }
         handleKeyPress(arabicKeyMap, click2press_event)
     }
@@ -69,24 +69,29 @@ function displayKeyMapping(arabicKeyMap) {
     for (const [displayedKey, keyEffect] of Object.entries(specialKeys)) {
         const keyItem = document.createElement('div');
         keyItem.classList.add('key-item');
-        keyItem.onclick = event => {replaceSelectionWithCharacter(keyEffect)}
+
+        if (keyEffect === 'Backspace') {
+            keyItem.onclick = event => { backspace() }
+        } else {
+            keyItem.onclick = event => { replaceSelectionWithCharacter(keyEffect) }
+        }
 
         keyItem.innerHTML = `
             <span class="ar-key">${displayedKey}</span>
         `;
-        
+
         specialGrid.appendChild(keyItem);
     }
 
     for (const [index, numeral] of Object.entries(numeralKeys)) {
         const keyItem = document.createElement('div');
         keyItem.classList.add('key-item');
-        keyItem.onclick = event => {replaceSelectionWithCharacter(numeral)}
+        keyItem.onclick = event => { replaceSelectionWithCharacter(numeral) }
 
         keyItem.innerHTML = `
             <span class="ar-key">${numeral}</span>
         `;
-        
+
         numeralGrid.appendChild(keyItem);
     }
 }
@@ -103,36 +108,43 @@ function setupEventListeners(arabicKeyMap) {
     clearBtn.addEventListener('click', clearText);
 }
 
-function removeSelectionThenAdaptCaret(){
+function removeSelectionThenAdaptCaret() {
     let caret_position = textOutput.selectionStart;
     let caret_position_end = textOutput.selectionEnd;
 
     // swap if selection is backwards
-    if(caret_position > caret_position_end){
+    if (caret_position > caret_position_end) {
         const placeholder = caret_position_end;
         caret_position_end = caret_position;
         caret_position = placeholder;
     }
+
+    textOutput.value = textOutput.value.slice(0, caret_position) + textOutput.value.slice(caret_position_end);
+    textOutput.selectionEnd = caret_position
 }
 
-function backspace(){
-    if (textOutput.selectionStart == textOutput.selectionEnd && textOutput.selectionStart > 0){
+function backspace() {
+    if (textOutput.selectionStart == textOutput.selectionEnd && textOutput.selectionStart > 0) {
         textOutput.selectionStart -= 1
     }
     removeSelectionThenAdaptCaret()
 }
 
-function insertAtCaretPosition(new_char){
-    // Replace selected text with arabic character or inert at caret position
-    textOutput.value = textOutput.value.slice(0, caret_position) + new_char + textOutput.value.slice(caret_position_end);
+function insertAtCaretPosition(new_char) {
+    caret_position = textOutput.selectionStart
+
+    // Insert character at caret position, does not replace selected text!
+    textOutput.value = textOutput.value.slice(0, textOutput.selectionStart) + new_char + textOutput.value.slice(textOutput.selectionStart);
 
     // Move caret forward after inserting character
     textOutput.selectionStart = caret_position + 1;
     textOutput.selectionEnd = caret_position + 1;
 }
 
-function replaceSelectionWithCharacter(new_char){
-    removeSelectionThenAdaptCaret()
+function replaceSelectionWithCharacter(new_char) {
+    if (textOutput.selectionStart != textOutput.selectionEnd) {
+        removeSelectionThenAdaptCaret()
+    }
     insertAtCaretPosition(new_char)
 }
 
@@ -155,7 +167,7 @@ function handleKeyPress(arabicKeyMap, event) {
 }
 
 // Animate key press
-function animatePress(keyItem){
+function animatePress(keyItem) {
     keyItem.classList.add('key-clicked');
     setTimeout(() => {
         keyItem.classList.remove('key-clicked');
