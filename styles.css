@@ -33,11 +33,11 @@ h1 {
     margin-bottom: 10px;
     font-size: 2.2rem;
     padding: 11px 18px;
-    text-shadow: 
-    2px 2px 4px rgba(0,0,0,0.5), 
-    4px 4px 10px rgba(0,0,0,0.3),
-    -1px -1px 0 #f39d12cb;
-    
+    text-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.5),
+        4px 4px 10px rgba(0, 0, 0, 0.3),
+        -1px -1px 0 #f39d12cb;
+
     font-weight: bold;
     letter-spacing: 0.05em;
     font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
@@ -48,7 +48,7 @@ h1 {
 
 
 h1 span.arabic {
-  margin-inline-start: auto;
+    margin-inline-start: auto;
 }
 
 .subtitle {
@@ -80,7 +80,6 @@ h1 span.arabic {
 
 .text-output:focus {
     outline: none;
-    border-color: #3e3668;
 }
 
 .text-output::placeholder {
@@ -88,11 +87,11 @@ h1 span.arabic {
 }
 
 .tool-row {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    width:100%;
-    margin-top:5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 5px;
 }
 
 .copy-btn {
@@ -166,7 +165,7 @@ h1 span.arabic {
 .keyboard-layout {
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 2px solid #e2e1d8fa;
+    border-top: 2px solid #4a4175;
 }
 
 .keyboard-layout h2 {
@@ -180,11 +179,34 @@ h1 span.arabic {
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     direction: rtl;
     gap: 4px;
-    max-height: 370px;
-    overflow-y: auto;
     padding: 5px;
     background: linear-gradient(-150deg, #101010, #24221b);
     border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.compact-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: auto;
+    flex: 0 1 auto;
+    margin-inline-start: auto;
+}
+
+.grid-row {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+    width: 100%;
+}
+
+.grid-row .compact-grid {
+    margin-inline-start: 0;
+}
+
+.compact-grid .key-item {
+    flex: 1 1 50px;
 }
 
 .key-item {
@@ -205,7 +227,7 @@ h1 span.arabic {
 
 .key-item:hover {
     background: linear-gradient(-45deg, #101010, #444033);
-    border: 2px outset #363636;
+    border: 3px outset #363636;
 }
 
 .key-item.key-clicked {
@@ -225,13 +247,13 @@ h1 span.arabic {
     font-weight: bold;
     font-size: 0.85rem;
     color: RGB(170, 175, 180);
-    font-family: 'Fira Mono', 'JetBrains Mono','Cascadia Mono'
+    font-family: 'Fira Mono', 'JetBrains Mono', 'Cascadia Mono'
 }
 
-.encircled {
-  text-shadow: 
-    0 0 8px #d4c7a1,
-    0 0 16px #ffc40099;
+.highlight {
+    text-shadow:
+        0 0 8px #d4c7a1,
+        0 0 16px #ffc40099;
 }
 
 @media (max-width: 600px) {
