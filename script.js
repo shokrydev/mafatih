@@ -71,9 +71,15 @@ function displayKeyMapping(arabicKeyMap) {
         keyItem.classList.add('key-item');
 
         if (keyEffect === 'Backspace') {
-            keyItem.onclick = event => { backspace() }
+            keyItem.onclick = event => {
+                animatePress(keyItem);
+                backspace();
+            }
         } else {
-            keyItem.onclick = event => { replaceSelectionWithCharacter(keyEffect) }
+            keyItem.onclick = event => {
+                animatePress(keyItem);
+                replaceSelectionWithCharacter(keyEffect);
+            }
         }
 
         keyItem.innerHTML = `
@@ -86,7 +92,10 @@ function displayKeyMapping(arabicKeyMap) {
     for (const [index, numeral] of Object.entries(numeralKeys)) {
         const keyItem = document.createElement('div');
         keyItem.classList.add('key-item');
-        keyItem.onclick = event => { replaceSelectionWithCharacter(numeral) }
+        keyItem.onclick = event => {
+            animatePress(keyItem);
+            replaceSelectionWithCharacter(numeral)
+        }
 
         keyItem.innerHTML = `
             <span class="ar-key">${numeral}</span>
@@ -120,10 +129,11 @@ function removeSelectionThenAdaptCaret() {
     }
 
     textOutput.value = textOutput.value.slice(0, caret_position) + textOutput.value.slice(caret_position_end);
-    textOutput.selectionEnd = caret_position
+    textOutput.setSelectionRange(caret_position, caret_position);
 }
 
 function backspace() {
+    textOutput.focus();
     if (textOutput.selectionStart == textOutput.selectionEnd && textOutput.selectionStart > 0) {
         textOutput.selectionStart -= 1
     }
@@ -137,11 +147,11 @@ function insertAtCaretPosition(new_char) {
     textOutput.value = textOutput.value.slice(0, textOutput.selectionStart) + new_char + textOutput.value.slice(textOutput.selectionStart);
 
     // Move caret forward after inserting character
-    textOutput.selectionStart = caret_position + 1;
-    textOutput.selectionEnd = caret_position + 1;
+    textOutput.setSelectionRange(caret_position + 1, caret_position + 1);
 }
 
 function replaceSelectionWithCharacter(new_char) {
+    textOutput.focus();
     if (textOutput.selectionStart != textOutput.selectionEnd) {
         removeSelectionThenAdaptCaret()
     }
