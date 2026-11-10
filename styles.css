@@ -31,10 +31,11 @@ body {
     color: var(--ink);
     font-family: var(--font-ui);
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px 16px;
+    padding: clamp(12px, 2.6vh, 24px) 16px;
 }
 
 /* Fixed, slightly dimmed artwork so it never stretches with the page */
@@ -55,7 +56,8 @@ body::before {
         0 0 0 1px rgba(230, 194, 106, 0.35),
         0 2px 6px rgba(14, 8, 18, 0.4),
         0 24px 60px rgba(14, 8, 18, 0.55);
-    padding: 32px;
+    /* Vertical sizes shrink with the viewport height, so the whole keyboard fits on a laptop screen */
+    padding: clamp(20px, 3.6vh, 32px) 32px;
     max-width: 860px;
     width: 100%;
 }
@@ -81,7 +83,7 @@ h1 .arabic {
 
 .subtitle {
     color: var(--ink-soft);
-    margin: 6px 0 20px;
+    margin: 6px 0 16px;
     font-size: 0.95rem;
     line-height: 1.5;
 }
@@ -89,7 +91,7 @@ h1 .arabic {
 .text-output {
     display: block;
     width: 100%;
-    min-height: 160px;
+    min-height: clamp(104px, 18vh, 160px);
     padding: 12px 16px;
     font-family: var(--font-arabic);
     font-size: 1.5rem;
@@ -182,7 +184,7 @@ h1 .arabic {
 .keyboard {
     display: grid;
     gap: 6px;
-    margin-top: 24px;
+    margin-top: 16px;
     /* Extra room at the bottom for the key edges */
     padding: 10px 10px 13px;
     background: var(--board);
@@ -206,8 +208,8 @@ h1 .arabic {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 60px;
-    padding: 4px 2px;
+    min-height: clamp(48px, 7.4vh, 60px);
+    padding: 2px;
     background: var(--key);
     border-radius: 8px;
     box-shadow:
@@ -216,6 +218,7 @@ h1 .arabic {
     cursor: pointer;
     user-select: none;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     transition: background 0.15s, transform 0.06s, box-shadow 0.06s;
 }
 
@@ -231,7 +234,7 @@ h1 .arabic {
     font-family: var(--font-arabic);
     font-weight: 600;
     font-size: 1.45rem;
-    line-height: 1.35;
+    line-height: 1.2;
     color: var(--gold);
 }
 
@@ -294,7 +297,7 @@ h1 .arabic {
     }
 
     .text-output {
-        min-height: 130px;
+        min-height: clamp(104px, 18vh, 130px);
     }
 
     .copy-btn,

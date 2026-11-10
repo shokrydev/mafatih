@@ -66,6 +66,13 @@ const utilityGrid = document.getElementById('utilityGrid');
 
 // Typed character (or 'Backspace') → on-screen key, to animate it on physical key presses
 const keyItems = {};
+// Physical key (event.code) → on-screen key it currently holds down
+const heldKeys = {};
+
+// Capitals get a shift symbol, 's' and 'S' are hard to tell apart on a small label
+function keyName(latinKey) {
+    return /[A-Z]/.test(latinKey) ? '⇧' + latinKey : latinKey;
+}
 
 // All Latin keys that produce the given Arabic character, e.g. 'e/2'
 function latinKeysFor(arabicChar) {
@@ -73,6 +80,7 @@ function latinKeysFor(arabicChar) {
         .filter(key => arabicKeyMap[key] === arabicChar)
         // Object.keys lists digit keys first, show the letter first instead
         .sort((a, b) => /\d/.test(a) - /\d/.test(b))
+        .map(keyName)
         .join('/');
 }
 
@@ -91,11 +99,17 @@ function addKey(grid, { id, label, latin, className, onClick }) {
 }
 
 function addCharacterKey(grid, char, options = {}) {
+    const latin = latinKeysFor(char);
     addKey(grid, {
         id: char,
         label: char,
-        latin: latinKeysFor(char),
-        onClick: () => insertText(char),
+        latin,
+        onClick: () => {
+            insertText(char);
+            if (latin) {
+                keyInfo.textContent = `${latin} → ${char}`;
+            }
+        },
         ...options
     });
 }
@@ -121,11 +135,29 @@ function displayKeyMapping() {
 
 function setupEventListeners() {
     document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', event => releaseKey(event.code));
+    // No keyup arrives for keys that are still down when the window loses focus
+    window.addEventListener('blur', () => Object.keys(heldKeys).forEach(releaseKey));
     copyBtn.addEventListener('click', copyToClipboard);
     clearBtn.addEventListener('click', clearText);
 
     // Keep the caret in the text area while clicking on-screen keys
     keyboard.addEventListener('mousedown', event => event.preventDefault());
+
+    // On touch screens, tapping on-screen keys must not open the system keyboard on top of them.
+    // Tapping the text area itself brings the system keyboard back.
+    keyboard.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'touch') {
+            textOutput.inputMode = 'none';
+        }
+    });
+    textOutput.addEventListener('pointerdown', () => {
+        if (textOutput.inputMode === 'none') {
+            textOutput.inputMode = '';
+            // The tap focuses the text area again, which is what opens the keyboard
+            textOutput.blur();
+        }
+    });
 }
 
 // Replace the selection (or insert at the caret) in the text area
@@ -153,8 +185,13 @@ function backspace() {
 function handleKeyDown(event) {
     const key = event.key;
 
-    // Leave shortcuts, IME input and keys aimed at the buttons alone
-    if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing || event.target.closest('button')) {
+    // Leave shortcuts and IME input alone
+    if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing) {
+        return;
+    }
+
+    // Enter and Space activate a focused button
+    if (event.target.closest('button') && (key === 'Enter' || key === ' ')) {
         return;
     }
 
@@ -168,23 +205,35 @@ function handleKeyDown(event) {
     textOutput.focus();
 
     const arabic = arabicKeyMap[key];
-    animatePress(keyItems[arabic || (key === 'Enter' ? '\n' : key)]);
+    holdKey(event.code, keyItems[arabic || (key === 'Enter' ? '\n' : key)]);
 
     if (arabic) {
         event.preventDefault();
         insertText(arabic);
-        keyInfo.textContent = `${key} → ${arabic}`;
+        keyInfo.textContent = `${keyName(key)} → ${arabic}`;
     } else if (typesCharacter && key !== ' ') {
         // Unmapped keys are typed as they are by the browser
         keyInfo.textContent = `${key} → not mapped`;
     }
 }
 
-// Animate key press (not every typed character has an on-screen key)
-function animatePress(keyItem) {
-    if (!keyItem) {
-        return;
+// Keep the on-screen key down for as long as the physical key is held
+// (not every typed character has an on-screen key)
+function holdKey(code, keyItem) {
+    releaseKey(code);
+    if (keyItem) {
+        keyItem.classList.add('key-clicked');
+        heldKeys[code] = keyItem;
     }
+}
+
+function releaseKey(code) {
+    heldKeys[code]?.classList.remove('key-clicked');
+    delete heldKeys[code];
+}
+
+// Short press animation for clicks and taps
+function animatePress(keyItem) {
     keyItem.classList.add('key-clicked');
     setTimeout(() => keyItem.classList.remove('key-clicked'), 100);
 }
