@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arabic Keyboard - Clavier Arabe </title>
+    <title>Arabic Keyboard - Clavier Arabe</title>
     <meta name="description"
         content="Write in Arabic with your English or French keyboard. This web app converts Latin letters to Arabic. Écrire en arabe avec un clavier anglais ou français. Cette application web convertit les lettres latines en arabe.">
     <meta name="keywords"
         content="Arabic keyboard, online Arabic typing, Arabic script, type Arabic, Mafatih, virtual keyboard">
+    <meta name="theme-color" content="#2d1a33">
 
     <!-- Favicon links -->
     <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
@@ -29,36 +30,29 @@
 </head>
 
 <body>
-    <div class="container">
+    <main class="container">
         <h1>
             Arabic Keyboard
-            <span class="arabic" lang="ar">لوحة المفاتيح العربية</span>
+            <span class="arabic" lang="ar" dir="rtl">لوحة المفاتيح العربية</span>
         </h1>
 
         <p class="subtitle">Write in Arabic with your English or French keyboard. This web app converts Latin letters to
             Arabic.</p>
 
-        <div class="text-area-wrapper">
-            <textarea id="textOutput" class="text-output" placeholder="...Your Arabic text will appear here"></textarea>
-            <div class="tool-row">
-                <button id="clearBtn" class="clear-btn" type="button">Clear Text</button>
-                <div class="keyboard-info">
-                    <p id="keyInfo">Press a latin key</p>
-                </div>
-                <button id="copyBtn" class="copy-btn" type="button">Copy Text</button>
-            </div>
+        <textarea id="textOutput" class="text-output" lang="ar" dir="rtl" spellcheck="false" autofocus
+            aria-label="Arabic text" placeholder="...Your Arabic text will appear here"></textarea>
+
+        <div class="tool-row">
+            <button id="clearBtn" class="clear-btn" type="button">Clear</button>
+            <p id="keyInfo" class="key-info" aria-live="polite">Press a Latin key</p>
+            <button id="copyBtn" class="copy-btn" type="button">Copy</button>
         </div>
 
-
-        <div class="keyboard-layout">
-            <div class="key-grid" id="keyGrid"></div>
-            <div class="grid-row">
-                <div class="key-grid compact-grid" id="specialKeyGrid"></div>
-                <div class="key-grid compact-grid" id="numeralGrid"></div>
-            </div>
+        <div class="keyboard" id="keyboard">
+            <div class="key-grid letter-grid" id="keyGrid"></div>
+            <div class="key-grid" id="utilityGrid"></div>
         </div>
-
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
