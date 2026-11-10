@@ -1,3 +1,24 @@
+:root {
+    /* Colours picked from the background artwork */
+    --aubergine: #2d1a33;
+    --ink: #2d1a33;
+    --ink-soft: #6b5d70;
+    --paper: #f5eedb;
+    --paper-bright: #fffdf6;
+    --line: #d9cba6;
+    --gold: #e6c26a;
+    --teal: #6fd0bf;
+
+    --board: #1d1222;
+    --key: #382a40;
+    --key-hover: #453550;
+    --key-edge: #0e0812;
+
+    --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    --font-arabic: 'Noto Naskh Arabic', 'Geeza Pro', 'Segoe UI', 'Noto Sans Arabic', Tahoma, sans-serif;
+    --font-mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,273 +26,296 @@
 }
 
 body {
-    background-image: url(images/ornamented.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
+    /* Solid colour shows instantly while the artwork loads */
+    background-color: var(--aubergine);
+    color: var(--ink);
+    font-family: var(--font-ui);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 24px 16px;
+}
+
+/* Fixed, slightly dimmed artwork so it never stretches with the page */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(rgba(29, 18, 34, 0.5), rgba(29, 18, 34, 0.5)),
+        url(images/ornamented.webp) center / cover no-repeat;
 }
 
 .container {
-    background: #a79f72fa;
-    border: 2px solid #3e3668;
-    border-radius: 12px;
-    box-shadow: 15px 15px 10px rgba(0, 0, 0, 0.7);
-    padding: 30px;
-    max-width: 900px;
+    background: var(--paper);
+    border-radius: 18px;
+    box-shadow:
+        0 0 0 1px rgba(230, 194, 106, 0.35),
+        0 2px 6px rgba(14, 8, 18, 0.4),
+        0 24px 60px rgba(14, 8, 18, 0.55);
+    padding: 32px;
+    max-width: 860px;
     width: 100%;
 }
 
 h1 {
-    color: #2e284b;
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 2.2rem;
-    padding: 11px 18px;
-    text-shadow:
-        2px 2px 4px rgba(0, 0, 0, 0.5),
-        4px 4px 10px rgba(0, 0, 0, 0.3),
-        -1px -1px 0 #f39d12cb;
-
-    font-weight: bold;
-    letter-spacing: 0.05em;
-    font-family: 'Segoe UI', Tahoma, 'Cairo', 'Noto Sans Arabic', sans-serif;
-    line-height: 1.15;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px 16px;
+    font-size: clamp(1.45rem, 4.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
 }
 
-
-h1 span.arabic {
-    margin-inline-start: auto;
+h1 .arabic {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+    /* Stays on the right, also when it wraps below the English title */
+    margin-left: auto;
 }
 
 .subtitle {
-    text-align: center;
-    color: #666;
-    margin-bottom: 15px;
-    font-size: 1rem;
-}
-
-.text-area-wrapper {
-    margin-bottom: 30px;
-    position: relative;
+    color: var(--ink-soft);
+    margin: 6px 0 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .text-output {
-    background: #e2e1d8fa;
+    display: block;
     width: 100%;
-    min-height: 150px;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: 3px inset #928080;
-    border-radius: 8px;
-    font-family: Arial, sans-serif;
+    min-height: 160px;
+    padding: 12px 16px;
+    font-family: var(--font-arabic);
+    font-size: 1.5rem;
+    line-height: 1.7;
+    color: var(--ink);
+    background: var(--paper-bright);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: inset 0 1px 3px rgba(45, 26, 51, 0.08);
     resize: vertical;
-    direction: rtl;
-    text-align: right;
-    transition: border-color 0.3s;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .text-output:focus {
     outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(45, 26, 51, 0.15);
 }
 
 .text-output::placeholder {
-    color: #bbb;
+    color: #b3a78c;
+    font-family: var(--font-ui);
+    font-size: 1.05rem;
 }
 
 .tool-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-top: 5px;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+/* Fixed to one line so the layout does not jump while typing */
+.key-info {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.copy-btn,
+.clear-btn {
+    flex-shrink: 0;
+    min-width: 104px;
+    padding: 10px 20px;
+    border: 1px solid var(--ink);
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.copy-btn:focus-visible,
+.clear-btn:focus-visible {
+    outline: 3px solid rgba(45, 26, 51, 0.35);
+    outline-offset: 2px;
 }
 
 .copy-btn {
-    flex-shrink: 0;
-    padding: 10px 25px;
-    background: #2e284b;
-    color: white;
-    border: 2px outset #4a4175;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
-    font-weight: 600;
+    background: var(--ink);
+    color: var(--paper);
 }
 
 .copy-btn:hover {
-    background: #FFD700;
-    border-color: #fdd808;
-    transform: translateY(-2px);
-}
-
-.copy-btn:active {
-    border-style: inset;
-    transform: translateY(0);
+    background: #46304e;
 }
 
 .copy-btn.copied {
-    background: #207068;
-    border-color: #2b887f;
+    background: #1f7a6e;
+    border-color: #1f7a6e;
 }
 
 .clear-btn {
-    flex-shrink: 0;
-    padding: 10px 25px;
-    background: #928080;
-    color: white;
-    border: 2px outset #a09090;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
-    font-weight: 600;
+    background: transparent;
+    color: var(--ink);
+    border-color: #b5a784;
 }
 
 .clear-btn:hover {
-    background: #ee5a5a;
-    transform: translateY(-2px);
+    background: rgba(168, 50, 44, 0.07);
+    border-color: #a8322c;
+    color: #a8322c;
 }
 
-.clear-btn:active {
-    transform: translateY(0);
-}
-
-.keyboard-info {
-    flex-grow: 1;
-    margin: 0 5px;
-    border: 2px solid #928080;
-    text-align: center;
-    padding: 3px;
-    background: #e2e1d8fa;
-    border-radius: 8px;
-    border-left: 4px solid #2e284b;
-}
-
-.keyboard-info p {
-    color: #333;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.keyboard-layout {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 2px solid #4a4175;
-}
-
-.keyboard-layout h2 {
-    color: #2e284b;
-    margin-bottom: 5px;
-    font-size: 1.3rem;
+.keyboard {
+    display: grid;
+    gap: 6px;
+    margin-top: 24px;
+    /* Extra room at the bottom for the key edges */
+    padding: 10px 10px 13px;
+    background: var(--board);
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(45, 26, 51, 0.25);
 }
 
 .key-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 6px;
+}
+
+/* Letters run right to left in alphabet order, the utility rows stay left to right */
+.letter-grid {
     direction: rtl;
-    gap: 4px;
-    padding: 5px;
-    background: linear-gradient(-150deg, #101010, #24221b);
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-.compact-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    width: auto;
-    flex: 0 1 auto;
-    margin-inline-start: auto;
-}
-
-.grid-row {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 10px;
-    width: 100%;
-}
-
-.grid-row .compact-grid {
-    margin-inline-start: 0;
-}
-
-.compact-grid .key-item {
-    flex: 1 1 50px;
 }
 
 .key-item {
-    cursor: pointer;
-    background: linear-gradient(-45deg, #050505, #333026);
-    border: 3px outset #222;
-    border-radius: 6px;
-    padding: 5px;
-    text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    padding: 4px 2px;
+    background: var(--key);
+    border-radius: 8px;
     box-shadow:
-        inset 0 2px 5px rgba(255, 255, 255, 0.1),
-        0 2px 5px rgba(0, 0, 0, 0.7);
-    transition: all 0.2s;
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 3px 0 var(--key-edge);
+    cursor: pointer;
     user-select: none;
+    touch-action: manipulation;
+    transition: background 0.15s, transform 0.06s, box-shadow 0.06s;
 }
 
-.key-item:hover {
-    background: linear-gradient(-45deg, #101010, #444033);
-    border: 3px outset #363636;
-}
-
+.key-item:active,
 .key-item.key-clicked {
-    background: linear-gradient(-45deg, #000000, #29261e);
-    border: 3px outset #222;
+    transform: translateY(2px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 1px 0 var(--key-edge);
 }
 
-.key-item .ar-key {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #ccac4d;
+.key-label {
+    font-family: var(--font-arabic);
+    font-weight: 600;
+    font-size: 1.45rem;
+    line-height: 1.35;
+    color: var(--gold);
 }
 
-.key-item .eng-key {
-    padding-left: 4px;
-    align-self: flex-end;
-    font-weight: bold;
-    font-size: 0.85rem;
-    color: RGB(170, 175, 180);
-    font-family: 'Fira Mono', 'JetBrains Mono', 'Cascadia Mono'
+.latin-key {
+    direction: ltr;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.2;
+    color: #a999b0;
 }
 
-.highlight {
-    text-shadow:
-        0 0 8px #d4c7a1,
-        0 0 16px #ffc40099;
+/* Letters whose Latin key is not obvious */
+.highlight .key-label {
+    color: var(--teal);
 }
 
-@media (max-width: 600px) {
+.highlight .latin-key {
+    color: #d6cbdb;
+}
+
+.numeral-key .key-label {
+    font-family: var(--font-ui);
+    font-size: 1.15rem;
+}
+
+.function-key {
+    background: #2b1f32;
+}
+
+.function-key .key-label {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #cdbfd3;
+}
+
+.backspace-key .key-label {
+    font-size: 1.25rem;
+}
+
+.wide-key {
+    grid-column: span 2;
+}
+
+.space-key {
+    grid-column: span 7;
+}
+
+/* Not on touch screens, where hover sticks after a tap */
+@media (hover: hover) {
+    .key-item:hover {
+        background: var(--key-hover);
+    }
+}
+
+@media (max-width: 700px) {
     .container {
         padding: 20px;
     }
 
-    h1 {
-        font-size: 1.8rem;
+    .text-output {
+        min-height: 130px;
     }
 
-    .text-output {
-        min-height: 120px;
-        font-size: 1rem;
-        padding: 15px;
+    .copy-btn,
+    .clear-btn {
+        min-width: 84px;
+        padding: 10px 14px;
     }
 
     .key-grid {
-        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .key-item {
+        min-height: 54px;
+    }
+
+    .space-key {
+        grid-column: span 2;
+    }
+
+    .backspace-key {
+        grid-column: span 1;
     }
 }
